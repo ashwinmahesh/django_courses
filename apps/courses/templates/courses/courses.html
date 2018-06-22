@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Courses</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style>
+        form{
+            border:1px solid black;
+            width:fit-content;
+            /* margin:auto; */
+            padding:20px 40px;
+        }
+        form>*{
+            display:block;
+        }
+        textarea{
+            resize:none;
+            height:80px;
+            width:200px;
+        }
+        .submit{
+            margin:auto;
+            margin-top:20px;
+            width:100px;
+            height:30px;
+            font-size:14pt;
+            background:rgb(170, 170, 170);
+            border-radius:10px;
+        }
+        .wrapper{
+            margin:0px 20px;
+        }
+        .red{
+            color:red;
+            font-style:italic;
+        }
+        .green{
+            color:green;
+            font-style:italic;
+        }
+    </style>
+</head>
+<body>
+    <div class='wrapper'>
+        <h2>Add a new course</h2>
+        {% for message in deletion_success %}
+            <p class='green'>{{message}}</p>
+        {% endfor %}
+        <form method='post' action='/add/'>
+            {% csrf_token %}
+            <p>Name:</p>
+            <input type='text' name='name'>
+            {% for message in name_errors %}
+                <p class='red'>{{message}}</p>
+            {% endfor %}
+            <p>Description</p>
+            <textarea name='description'></textarea>
+            {% for message in description_errors %}
+                <p class='red'>{{message}}</p>
+            {% endfor %}
+            <input class='submit' type='submit' value='Add'>
+        </form>
+        <h2>Courses</h2>
+        <table class='table table-striped'>
+            <thead>
+                <th>Course Name</th>
+                <th>Description</th>
+                <th>Date Added</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                    <tr>
+                        <td>{{course.name}}</td>
+                        <td>{{course.description}}</td>
+                        <td>{{course.created_at_clean}}</td>
+                        <td><a href='/delete/{{course.id}}'>Remove</a></td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td>How to be a ninja</td>
+                    <td>A very cool course</td>
+                    <td>Today 10:00 PM</td>
+                    <td><a href='#'>Remove</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
